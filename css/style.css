@@ -1,0 +1,1314 @@
+/* ==================================================
+   LUMIÈRE — LEVEL 26
+   GAMER / CYBER FANTASY THEME
+================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  background: #05050c;
+  color: #ffffff;
+  font-family: "Orbitron", sans-serif;
+  overflow: hidden;
+}
+
+/* ==================================================
+   INTRO SCREEN
+================================================== */
+
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: radial-gradient(
+    circle at center,
+    #181229 0%,
+    #090812 45%,
+    #030308 100%
+  );
+
+  overflow: hidden;
+
+  transition:
+    opacity 0.8s ease,
+    visibility 0.8s ease;
+}
+
+.intro-screen.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ==================================================
+   INTRO GRID
+================================================== */
+
+.intro-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+
+  background-size: 50px 50px;
+
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 30%,
+    black 70%,
+    transparent
+  );
+}
+
+/* ==================================================
+   AMBIENT GLOW
+================================================== */
+
+.ambient-glow {
+  position: absolute;
+
+  width: 300px;
+  height: 300px;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.9),
+    rgba(180, 130, 255, 0.35),
+    transparent 70%
+  );
+
+  filter: blur(20px);
+
+  pointer-events: none;
+}
+
+/* ==================================================
+   LIGHT SOURCE
+================================================== */
+
+.light-source {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.light-halo {
+  position: absolute;
+
+  width: 80px;
+  height: 80px;
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.95),
+    rgba(220, 160, 255, 0.45),
+    transparent 70%
+  );
+
+  filter: blur(5px);
+}
+
+.light-core {
+  position: relative;
+
+  width: 10px;
+  height: 10px;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 10px #ffffff,
+    0 0 25px #dcb4ff,
+    0 0 50px #b77dff;
+}
+
+/* ==================================================
+   INTRO STARS
+================================================== */
+
+.intro-stars {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0;
+
+  transition: opacity 1s ease;
+
+  pointer-events: none;
+}
+
+.intro-stars span {
+  position: absolute;
+
+  color: #d9c4ff;
+
+  opacity: 0;
+
+  text-shadow:
+    0 0 8px #ffffff,
+    0 0 18px #b77dff;
+
+  animation: introStarFloat 3s ease-in-out infinite;
+}
+
+.intro-stars span:nth-child(1) {
+  left: 15%;
+  top: 25%;
+}
+
+.intro-stars span:nth-child(2) {
+  left: 25%;
+  top: 65%;
+}
+
+.intro-stars span:nth-child(3) {
+  left: 38%;
+  top: 18%;
+}
+
+.intro-stars span:nth-child(4) {
+  left: 48%;
+  top: 75%;
+}
+
+.intro-stars span:nth-child(5) {
+  left: 62%;
+  top: 20%;
+}
+
+.intro-stars span:nth-child(6) {
+  left: 73%;
+  top: 63%;
+}
+
+.intro-stars span:nth-child(7) {
+  left: 85%;
+  top: 30%;
+}
+
+.intro-stars span:nth-child(8) {
+  left: 90%;
+  top: 72%;
+}
+
+.intro-stars span:nth-child(9) {
+  left: 12%;
+  top: 80%;
+}
+
+.intro-stars span:nth-child(10) {
+  left: 55%;
+  top: 10%;
+}
+
+@keyframes introStarFloat {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-10px) scale(1.2);
+  }
+}
+
+/* ==================================================
+   INTRO CONTENT
+================================================== */
+
+.intro-content {
+  position: relative;
+  z-index: 5;
+
+  width: min(90%, 650px);
+
+  text-align: center;
+
+  opacity: 0;
+
+  transform: translateY(20px);
+
+  transition:
+    opacity 1s ease,
+    transform 1s ease;
+}
+
+.intro-system {
+  margin-bottom: 20px;
+
+  color: #9e83c7;
+
+  font-size: 10px;
+  letter-spacing: 4px;
+}
+
+.intro-title {
+  color: #ffffff;
+
+  font-size: clamp(40px, 9vw, 85px);
+  font-weight: 900;
+
+  letter-spacing: 8px;
+
+  text-shadow:
+    0 0 10px #ffffff,
+    0 0 30px #b77dff,
+    0 0 70px rgba(183, 125, 255, 0.7);
+
+  transition: text-shadow 1s ease;
+}
+
+.intro-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 50px auto 12px;
+
+  width: min(100%, 480px);
+
+  color: #d8cae8;
+
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.light-percent {
+  color: #ffffff;
+}
+
+.intro-progress {
+  width: min(100%, 480px);
+  height: 4px;
+
+  margin: auto;
+
+  background: rgba(255, 255, 255, 0.1);
+
+  overflow: hidden;
+}
+
+.intro-progress-fill {
+  width: 0%;
+  height: 100%;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 10px #ffffff,
+    0 0 25px #b77dff;
+
+  animation: introProgress 6s linear forwards;
+}
+
+@keyframes introProgress {
+  to {
+    width: 100%;
+  }
+}
+
+.intro-loading {
+  margin-top: 14px;
+
+  color: #685c79;
+
+  font-size: 8px;
+  letter-spacing: 3px;
+}
+
+/* ==================================================
+   LOGIN SCREEN
+================================================== */
+
+.login-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 100vh;
+
+  background: radial-gradient(
+    circle at 50% 45%,
+    #161326 0%,
+    #080811 50%,
+    #030307 100%
+  );
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition:
+    opacity 1s ease,
+    visibility 1s ease;
+}
+
+.login-screen.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ==================================================
+   LOGIN BACKGROUND
+================================================== */
+
+.login-background {
+  position: absolute;
+  inset: 0;
+
+  overflow: hidden;
+}
+
+.grid-lines {
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    linear-gradient(rgba(164, 120, 220, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(164, 120, 220, 0.05) 1px, transparent 1px);
+
+  background-size: 55px 55px;
+
+  transform: perspective(500px) rotateX(60deg) scale(1.6);
+
+  transform-origin: center bottom;
+
+  opacity: 0.5;
+}
+
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -10%;
+
+  height: 2px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(190, 130, 255, 0.7),
+    transparent
+  );
+
+  box-shadow: 0 0 15px rgba(190, 130, 255, 0.6);
+
+  animation: scanMove 6s linear infinite;
+}
+
+@keyframes scanMove {
+  from {
+    top: -10%;
+  }
+
+  to {
+    top: 110%;
+  }
+}
+
+.background-orb {
+  position: absolute;
+
+  width: 400px;
+  height: 400px;
+
+  border-radius: 50%;
+
+  filter: blur(100px);
+
+  opacity: 0.12;
+}
+
+.orb-one {
+  left: -150px;
+  top: -150px;
+
+  background: #8c5ac7;
+}
+
+.orb-two {
+  right: -150px;
+  bottom: -150px;
+
+  background: #4d8cc7;
+}
+
+.background-star {
+  position: absolute;
+
+  color: #cdb4ff;
+
+  opacity: 0.5;
+
+  text-shadow: 0 0 10px #b77dff;
+
+  animation: starPulse 2.5s ease-in-out infinite;
+}
+
+.star-one {
+  left: 10%;
+  top: 20%;
+}
+
+.star-two {
+  left: 20%;
+  bottom: 18%;
+}
+
+.star-three {
+  right: 12%;
+  top: 25%;
+}
+
+.star-four {
+  right: 22%;
+  bottom: 20%;
+}
+
+@keyframes starPulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}
+
+/* ==================================================
+   LOGIN CONTAINER
+================================================== */
+
+.login-container {
+  position: relative;
+  z-index: 5;
+
+  width: min(92%, 500px);
+
+  text-align: center;
+}
+
+/* ==================================================
+   LOGIN LOGO
+================================================== */
+
+.login-logo {
+  margin-bottom: 25px;
+}
+
+.logo-symbol {
+  margin-bottom: 5px;
+
+  color: #d7bdff;
+
+  font-size: 22px;
+
+  text-shadow: 0 0 10px #b77dff;
+}
+
+.logo-title {
+  color: #ffffff;
+
+  font-size: clamp(28px, 7vw, 48px);
+  font-weight: 900;
+
+  letter-spacing: 7px;
+
+  text-shadow:
+    0 0 10px #ffffff,
+    0 0 30px #a875d9;
+}
+
+.logo-subtitle {
+  margin-top: 8px;
+
+  color: #756886;
+
+  font-size: 8px;
+  letter-spacing: 3px;
+}
+
+/* ==================================================
+   LOGIN BOX
+================================================== */
+
+.login-box {
+  position: relative;
+
+  border: 1px solid rgba(183, 125, 255, 0.4);
+
+  background: linear-gradient(
+    145deg,
+    rgba(24, 19, 38, 0.95),
+    rgba(8, 8, 16, 0.98)
+  );
+
+  box-shadow:
+    0 0 30px rgba(130, 80, 180, 0.15),
+    inset 0 0 30px rgba(130, 80, 180, 0.04);
+
+  text-align: left;
+
+  overflow: hidden;
+}
+
+.login-box::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* ==================================================
+   TERMINAL HEADER
+================================================== */
+
+.terminal-header {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 13px 18px;
+
+  border-bottom: 1px solid rgba(183, 125, 255, 0.2);
+
+  background: rgba(255, 255, 255, 0.025);
+
+  color: #806f93;
+
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+
+.terminal-status {
+  color: #75d69a;
+
+  text-shadow: 0 0 8px rgba(117, 214, 154, 0.5);
+}
+
+/* ==================================================
+   LOGIN CONTENT
+================================================== */
+
+.login-content {
+  padding: 30px;
+}
+
+.access-label {
+  margin-bottom: 15px;
+
+  color: #9c77c0;
+
+  font-size: 8px;
+  letter-spacing: 3px;
+}
+
+.login-content h1 {
+  color: #ffffff;
+
+  font-size: clamp(20px, 5vw, 30px);
+  line-height: 1.3;
+
+  letter-spacing: 2px;
+}
+
+.login-content h1 span {
+  color: #c99cff;
+
+  text-shadow: 0 0 15px rgba(183, 125, 255, 0.7);
+}
+
+.login-description {
+  margin-top: 12px;
+  margin-bottom: 30px;
+
+  color: #70657c;
+
+  font-size: 9px;
+  line-height: 1.8;
+  letter-spacing: 1px;
+}
+
+/* ==================================================
+   INPUTS
+================================================== */
+
+.input-group {
+  margin-bottom: 18px;
+}
+
+.input-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #91809f;
+
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+
+  height: 50px;
+
+  border: 1px solid rgba(183, 125, 255, 0.2);
+
+  background: rgba(0, 0, 0, 0.3);
+
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.input-wrapper:focus-within {
+  border-color: rgba(196, 146, 255, 0.8);
+
+  box-shadow: 0 0 15px rgba(183, 125, 255, 0.12);
+}
+
+.input-icon {
+  width: 50px;
+
+  color: #9e72c9;
+
+  text-align: center;
+
+  font-size: 12px;
+}
+
+.input-wrapper input {
+  flex: 1;
+
+  height: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #ffffff;
+
+  font-family: "Orbitron", sans-serif;
+
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.input-wrapper input::placeholder {
+  color: #494052;
+
+  font-family: "Orbitron", sans-serif;
+
+  font-size: 8px;
+}
+
+/* ==================================================
+   ERROR
+================================================== */
+
+.error-message {
+  min-height: 20px;
+
+  margin-bottom: 8px;
+
+  color: #e9798f;
+
+  font-size: 8px;
+  line-height: 1.5;
+
+  letter-spacing: 1px;
+
+  text-align: center;
+}
+
+/* ==================================================
+   START BUTTON
+================================================== */
+
+.start-button {
+  position: relative;
+
+  width: 100%;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  border: 1px solid rgba(210, 170, 255, 0.65);
+
+  background: linear-gradient(
+    90deg,
+    rgba(117, 74, 156, 0.35),
+    rgba(183, 125, 255, 0.15)
+  );
+
+  color: #ffffff;
+
+  font-family: "Orbitron", sans-serif;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.start-button::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -100%;
+
+  width: 100%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12),
+    transparent
+  );
+
+  transition: left 0.5s ease;
+}
+
+.start-button:hover::before {
+  left: 100%;
+}
+
+.start-button:hover {
+  transform: translateY(-2px);
+
+  border-color: #d8b7ff;
+
+  box-shadow: 0 0 20px rgba(183, 125, 255, 0.25);
+}
+
+.start-button:active {
+  transform: translateY(0);
+}
+
+.start-button:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.button-icon {
+  color: #c99cff;
+}
+
+.button-arrow {
+  color: #c99cff;
+
+  font-size: 14px;
+}
+
+/* ==================================================
+   LOGIN FOOTER
+================================================== */
+
+.login-footer {
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 20px;
+
+  color: #4d4557;
+
+  font-size: 7px;
+  letter-spacing: 2px;
+}
+
+.login-tip {
+  margin-top: 15px;
+
+  color: #51475d;
+
+  font-size: 7px;
+
+  letter-spacing: 2px;
+}
+
+/* ==================================================
+   LEVEL REVEAL
+================================================== */
+
+.level-reveal {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: radial-gradient(
+    circle at center,
+    #181028 0%,
+    #08070f 45%,
+    #020207 100%
+  );
+
+  opacity: 0;
+  visibility: hidden;
+
+  transform: scale(1.03);
+
+  transition:
+    opacity 0.8s ease,
+    visibility 0.8s ease,
+    transform 0.8s ease;
+
+  overflow: hidden;
+}
+
+.level-reveal.show {
+  opacity: 1;
+  visibility: visible;
+
+  transform: scale(1);
+}
+
+/* ==================================================
+   REVEAL GRID
+================================================== */
+
+.reveal-grid {
+  position: absolute;
+  inset: -20%;
+
+  background-image:
+    linear-gradient(rgba(183, 125, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(183, 125, 255, 0.045) 1px, transparent 1px);
+
+  background-size: 45px 45px;
+
+  transform: perspective(500px) rotateX(55deg);
+
+  transform-origin: center bottom;
+}
+
+.reveal-scan {
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    transparent 0%,
+    rgba(190, 130, 255, 0.04) 50%,
+    transparent 100%
+  );
+
+  background-size: 100% 8px;
+
+  opacity: 0.4;
+}
+
+/* ==================================================
+   REVEAL PARTICLES
+================================================== */
+
+.reveal-particles {
+  position: absolute;
+  inset: 0;
+}
+
+.reveal-particles span {
+  position: absolute;
+
+  color: #c9a7ff;
+
+  text-shadow: 0 0 10px #a875d9;
+
+  opacity: 0;
+
+  animation: revealParticle 3s ease-in-out infinite;
+}
+
+.reveal-particles span:nth-child(1) {
+  left: 15%;
+  top: 20%;
+}
+
+.reveal-particles span:nth-child(2) {
+  left: 25%;
+  top: 75%;
+}
+
+.reveal-particles span:nth-child(3) {
+  left: 35%;
+  top: 30%;
+}
+
+.reveal-particles span:nth-child(4) {
+  left: 70%;
+  top: 18%;
+}
+
+.reveal-particles span:nth-child(5) {
+  left: 80%;
+  top: 35%;
+}
+
+.reveal-particles span:nth-child(6) {
+  left: 88%;
+  top: 72%;
+}
+
+.reveal-particles span:nth-child(7) {
+  left: 12%;
+  top: 60%;
+}
+
+.reveal-particles span:nth-child(8) {
+  left: 60%;
+  top: 80%;
+}
+
+.reveal-particles span:nth-child(9) {
+  left: 45%;
+  top: 12%;
+}
+
+.reveal-particles span:nth-child(10) {
+  left: 52%;
+  top: 90%;
+}
+
+@keyframes revealParticle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: translateY(0) scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-15px) scale(1.3);
+  }
+}
+
+/* ==================================================
+   REVEAL CONTENT
+================================================== */
+
+.reveal-content {
+  position: relative;
+  z-index: 5;
+
+  width: min(90%, 700px);
+
+  text-align: center;
+}
+
+.access-granted {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+
+  color: #86e6ad;
+
+  font-size: clamp(9px, 2vw, 13px);
+  font-weight: 700;
+
+  letter-spacing: 4px;
+
+  text-shadow: 0 0 10px rgba(134, 230, 173, 0.5);
+}
+
+.access-line {
+  width: 50px;
+  height: 1px;
+
+  background: linear-gradient(90deg, transparent, #86e6ad);
+}
+
+.access-line:last-child {
+  background: linear-gradient(90deg, #86e6ad, transparent);
+}
+
+.level-label {
+  margin-top: 45px;
+
+  color: #81718e;
+
+  font-size: 9px;
+  letter-spacing: 4px;
+}
+
+.level-number {
+  margin-top: 8px;
+
+  color: #ffffff;
+
+  font-size: clamp(100px, 22vw, 190px);
+  font-weight: 900;
+
+  line-height: 0.9;
+
+  text-shadow:
+    0 0 10px #ffffff,
+    0 0 30px #d6b5ff,
+    0 0 80px rgba(183, 125, 255, 0.7);
+}
+
+.chapter-title {
+  margin-top: 30px;
+
+  color: #d4b7f5;
+
+  font-size: clamp(18px, 4vw, 30px);
+  font-weight: 800;
+
+  letter-spacing: 5px;
+
+  text-shadow: 0 0 20px rgba(183, 125, 255, 0.45);
+}
+
+.chapter-description {
+  margin-top: 20px;
+
+  color: #82768f;
+
+  font-size: 9px;
+  line-height: 2.1;
+
+  letter-spacing: 2px;
+}
+
+.reveal-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  width: min(90%, 350px);
+
+  margin: 30px auto;
+}
+
+.reveal-divider span:first-child,
+.reveal-divider span:last-child {
+  flex: 1;
+
+  height: 1px;
+
+  background: linear-gradient(90deg, transparent, rgba(183, 125, 255, 0.5));
+}
+
+.reveal-divider span:last-child {
+  background: linear-gradient(90deg, rgba(183, 125, 255, 0.5), transparent);
+}
+
+.reveal-divider span:nth-child(2) {
+  color: #c99cff;
+
+  text-shadow: 0 0 10px #b77dff;
+}
+
+/* ==================================================
+   CONTINUE BUTTON
+================================================== */
+
+.continue-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+
+  min-width: 220px;
+  height: 52px;
+
+  padding: 0 25px;
+
+  border: 1px solid rgba(205, 166, 255, 0.7);
+
+  background: rgba(120, 76, 170, 0.18);
+
+  color: #ffffff;
+
+  font-family: "Orbitron", sans-serif;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 3px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.continue-button strong {
+  color: #c99cff;
+
+  font-size: 15px;
+}
+
+.continue-button:hover {
+  transform: translateY(-3px);
+
+  background: rgba(154, 100, 207, 0.3);
+
+  box-shadow: 0 0 25px rgba(183, 125, 255, 0.25);
+}
+
+.continue-button:active {
+  transform: translateY(0);
+}
+
+/* ==================================================
+   REVEAL FOOTER
+================================================== */
+
+.reveal-footer {
+  margin-top: 30px;
+
+  color: #403747;
+
+  font-size: 7px;
+  letter-spacing: 2px;
+}
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+
+@media (max-width: 600px) {
+  .intro-title {
+    letter-spacing: 4px;
+  }
+
+  .login-content {
+    padding: 22px;
+  }
+
+  .login-content h1 {
+    font-size: 20px;
+  }
+
+  .chapter-title {
+    letter-spacing: 3px;
+  }
+
+  .chapter-description {
+    font-size: 8px;
+  }
+
+  .access-line {
+    width: 25px;
+  }
+}
+
+@media (max-height: 700px) {
+  .login-logo {
+    margin-bottom: 12px;
+  }
+
+  .login-content {
+    padding: 20px;
+  }
+
+  .input-group {
+    margin-bottom: 12px;
+  }
+
+  .input-wrapper {
+    height: 44px;
+  }
+
+  .login-description {
+    margin-bottom: 18px;
+  }
+
+  .level-label {
+    margin-top: 25px;
+  }
+
+  .level-number {
+    font-size: 100px;
+  }
+
+  .chapter-title {
+    margin-top: 18px;
+  }
+
+  .chapter-description {
+    margin-top: 12px;
+  }
+
+  .reveal-divider {
+    margin: 18px auto;
+  }
+
+  .reveal-footer {
+    margin-top: 15px;
+  }
+}

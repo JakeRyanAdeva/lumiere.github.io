@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Lumière — Level 26</title>
+
+    <!-- GOOGLE FONT -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- HOME CSS -->
+    <link rel="stylesheet" href="css/home.css" />
+  </head>
+
+  <body>
+    <div class="world">
+      <!-- =====================================================
+         SKY
+    ====================================================== -->
+
+      <div class="sky" id="sky">
+        <div class="moon">
+          <span class="moon-crater crater-one"></span>
+          <span class="moon-crater crater-two"></span>
+          <span class="moon-crater crater-three"></span>
+        </div>
+
+        <span class="star star-1">✦</span>
+        <span class="star star-2">✧</span>
+        <span class="star star-3">✦</span>
+        <span class="star star-4">·</span>
+        <span class="star star-5">✧</span>
+        <span class="star star-6">✦</span>
+        <span class="star star-7">·</span>
+        <span class="star star-8">✧</span>
+        <span class="star star-9">✦</span>
+        <span class="star star-10">·</span>
+        <span class="star star-11">✧</span>
+        <span class="star star-12">✦</span>
+
+        <div class="light-particles" id="lightParticles"></div>
+      </div>
+
+      <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+      <header class="world-header">
+        <div class="brand">
+          <div class="brand-title">LUMIÈRE</div>
+
+          <div class="brand-subtitle">GAMER WORLD // BIRTHDAY EDITION</div>
+        </div>
+
+        <div class="player-info">
+          <div class="player-name">PLAYER: JAKE</div>
+
+          <div class="health">
+            <span>HP</span>
+
+            <div class="health-bar">
+              <div class="health-fill"></div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+      <main class="world-content">
+        <!-- =================================================
+             WELCOME
+        ================================================== -->
+
+        <section class="welcome-text">
+          <div class="welcome-small">✦ WELCOME, JAKE ✦</div>
+
+          <h1>
+            HAPPY
+            <span>26TH</span> BIRTHDAY
+          </h1>
+
+          <p>A NEW CHAPTER HAS BEEN UNLOCKED.</p>
+        </section>
+
+        <!-- =================================================
+             CAKE
+        ================================================== -->
+
+        <section class="cake-area">
+          <div class="cake-glow"></div>
+
+          <div class="cake-sparkle sparkle-one">✦</div>
+
+          <div class="cake-sparkle sparkle-two">✧</div>
+
+          <div class="cake-sparkle sparkle-three">✦</div>
+
+          <div class="cake-sparkle sparkle-four">✧</div>
+
+          <!-- CAKE -->
+
+          <div class="cake">
+            <!-- CANDLES -->
+
+            <div class="cake-candles">
+              <div class="candle candle-one">
+                <div class="flame">🔥</div>
+
+                <div class="candle-body"></div>
+              </div>
+
+              <div class="candle candle-two">
+                <div class="flame">🔥</div>
+
+                <div class="candle-body"></div>
+              </div>
+
+              <div class="candle candle-three">
+                <div class="flame">🔥</div>
+
+                <div class="candle-body"></div>
+              </div>
+
+              <div class="candle candle-four">
+                <div class="flame">🔥</div>
+
+                <div class="candle-body"></div>
+              </div>
+            </div>
+
+            <!-- TOP -->
+
+            <div class="cake-top">
+              <div class="cake-frosting">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <!-- MIDDLE -->
+
+            <div class="cake-middle">
+              <div class="cake-decoration">
+                <span>✦</span>
+                <span>·</span>
+                <span>✦</span>
+                <span>·</span>
+                <span>✦</span>
+                <span>·</span>
+                <span>✦</span>
+              </div>
+            </div>
+
+            <!-- BOTTOM -->
+
+            <div class="cake-bottom">
+              <div class="cake-frosting-bottom">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <!-- PLATE -->
+
+            <div class="cake-plate"></div>
+          </div>
+
+          <div class="cake-message">MAKE A WISH</div>
+        </section>
+
+        <!-- =================================================
+             GAME MENU
+        ================================================== -->
+
+        <section class="game-menu">
+          <button class="menu-button" data-modal="journeyModal">
+            <span class="menu-icon">◈</span>
+            <span>MY JOURNEY</span>
+          </button>
+
+          <button class="menu-button" data-modal="letterModal">
+            <span class="menu-icon">✉</span>
+            <span>BIRTHDAY LETTER</span>
+          </button>
+
+          <button class="menu-button" data-modal="musicModal">
+            <span class="menu-icon">♫</span>
+            <span>BIRTHDAY MUSIC</span>
+          </button>
+        </section>
+
+        <!-- =================================================
+             QUEST PANEL
+        ================================================== -->
+
+        <section class="quest-panel">
+          <div class="quest-header">
+            <span> ACTIVE QUESTS </span>
+
+            <span id="questCount"> 0 / 3 </span>
+          </div>
+
+          <div class="quest-list">
+            <!-- CAKE QUEST -->
+
+            <div class="quest-item" id="cakeQuest">
+              <span class="quest-check"> □ </span>
+
+              <span class="quest-text"> MAKE A WISH </span>
+            </div>
+
+            <!-- JOURNEY QUEST -->
+
+            <div class="quest-item" id="journeyQuest">
+              <span class="quest-check"> □ </span>
+
+              <span class="quest-text"> COMPLETE THE JOURNEY </span>
+            </div>
+
+            <!-- LETTER QUEST -->
+
+            <div class="quest-item" id="letterQuest">
+              <span class="quest-check"> □ </span>
+
+              <span class="quest-text"> READ THE BIRTHDAY LETTER </span>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+      <footer class="world-footer">
+        <span> LUMIÈRE SYSTEM v26.0 </span>
+
+        <span> ✦ HAPPY BIRTHDAY ✦ </span>
+      </footer>
+
+      <!-- =====================================================
+         HIDDEN STAR
+    ====================================================== -->
+
+      <button
+        class="hidden-star"
+        id="hiddenStar"
+        aria-label="Locked secret star"
+        title="Complete all quests first"
+      >
+        ★
+      </button>
+
+      <!-- =====================================================
+         JOURNEY MODAL
+    ====================================================== -->
+
+      <div class="modal" id="journeyModal" aria-hidden="true">
+        <div class="modal-box">
+          <button class="close-modal" aria-label="Close">×</button>
+
+          <h2 class="modal-title">MY JOURNEY</h2>
+
+          <p class="modal-subtitle">EVERY LEVEL TELLS A STORY.</p>
+
+          <div class="journey-progress">
+            <div class="journey-progress-top">
+              <span> PROGRESS </span>
+
+              <span id="journeyProgressText"> JOURNEY 01 / 06 </span>
+            </div>
+
+            <div class="journey-progress-bar">
+              <div class="journey-progress-fill" id="journeyProgressFill"></div>
+            </div>
+          </div>
+
+          <div class="journey-map">
+            <div class="journey-line"></div>
+
+            <button
+              class="journey-level"
+              data-level="21"
+              data-title="THE BEGINNING"
+              data-text="Every adventure begins somewhere. The first steps may be uncertain, but they are still steps forward."
+              data-text-size="13px"
+              data-title-size="16px"
+            >
+              <span class="level-number"> 21 </span>
+
+              <span class="level-label"> THE<br />BEGINNING </span>
+            </button>
+
+            <button
+              class="journey-level"
+              data-level="22"
+              data-title="THE GRIND"
+              data-text="There were difficult days, long nights, mistakes, and moments when giving up seemed easier. But you kept going."
+              data-text-size="13px"
+              data-title-size="16px"
+            >
+              <span class="level-number"> 22 </span>
+
+              <span class="level-label"> THE<br />GRIND </span>
+            </button>
+
+            <button
+              class="journey-level"
+              data-level="23"
+              data-title="THE GROWTH"
+              data-text="Every challenge taught you something. Every mistake became experience. You were slowly becoming stronger."
+              data-text-size="13px"
+              data-title-size="16px"
+            >
+              <span class="level-number"> 23 </span>
+
+              <span class="level-label"> THE<br />GROWTH </span>
+            </button>
+
+            <button
+              class="journey-level"
+              data-level="24"
+              data-title="THE CHANGE"
+              data-text="Life changed. So did you. New opportunities appeared, new people entered your story, and new dreams began to take shape."
+              data-text-size="13px"
+              data-title-size="16px"
+            >
+              <span class="level-number"> 24 </span>
+
+              <span class="level-label"> THE<br />CHANGE </span>
+            </button>
+
+            <button
+              class="journey-level"
+              data-level="25"
+              data-title="THE PREPARATION"
+              data-text="Level 25 became a bridge between who you were and who you are becoming. The next chapter was waiting."
+              data-text-size="13px"
+              data-title-size="16px"
+            >
+              <span class="level-number"> 25 </span>
+
+              <span class="level-label"> THE<br />PREPARATION </span>
+            </button>
+
+            <button
+              class="journey-level"
+              data-level="26"
+              data-title="THE NEXT CHAPTER"
+              data-text="LEVEL 26. This is not the ending. It is another beginning. There are still dreams to chase, places to discover, things to create, and memories waiting to happen."
+              data-text-size="14px"
+              data-title-size="18px"
+            >
+              <span class="level-number"> 26 </span>
+
+              <span class="level-label"> THE<br />NEXT CHAPTER </span>
+
+              <span class="final-star"> ★ </span>
+            </button>
+          </div>
+
+          <button class="journey-modal-continue" id="journeyContinue">
+            REPLAY JOURNEY
+          </button>
+        </div>
+      </div>
+
+      <!-- =====================================================
+         JOURNEY REVEAL
+    ====================================================== -->
+
+      <div class="journey-reveal" id="journeyReveal" aria-hidden="true">
+        <div class="journey-flash"></div>
+
+        <div class="journey-unlocked">
+          <div class="unlock-stars">✦ ✧ ★ ✧ ✦</div>
+
+          <div class="unlock-text">LEVEL UNLOCKED</div>
+
+          <div class="unlock-level" id="unlockLevel">LEVEL 21</div>
+
+          <div class="unlock-title" id="unlockTitle">THE BEGINNING</div>
+
+          <div class="story-box">
+            <div class="story-label">SYSTEM MESSAGE</div>
+
+            <div id="storyText"></div>
+          </div>
+
+          <button class="journey-continue" id="journeyContinueReveal" disabled>
+            CONTINUE →
+          </button>
+        </div>
+      </div>
+
+      <!-- =====================================================
+         LETTER MODAL
+    ====================================================== -->
+
+      <div class="modal" id="letterModal" aria-hidden="true">
+        <div class="modal-box">
+          <button class="close-modal" aria-label="Close">×</button>
+
+          <h2 class="modal-title">BIRTHDAY LETTER</h2>
+
+          <p class="modal-subtitle">A MESSAGE FROM YOUR FUTURE SELF.</p>
+
+          <div class="letter-content" id="letterContent"></div>
+
+          <div class="letter-cursor">█</div>
+        </div>
+      </div>
+
+      <!-- =====================================================
+         MUSIC MODAL
+    ====================================================== -->
+
+      <div class="modal" id="musicModal" aria-hidden="true">
+        <div class="modal-box">
+          <button class="close-modal" aria-label="Close">×</button>
+
+          <h2 class="modal-title">BIRTHDAY MUSIC</h2>
+
+          <p class="modal-subtitle">A SOUNDTRACK FOR LEVEL 26.</p>
+
+          <div class="music-display">
+            <div class="music-disc">♫</div>
+
+            <div>
+              <div class="song-title">LEVEL 26</div>
+
+              <div class="song-artist">LUMIÈRE</div>
+            </div>
+          </div>
+
+          <div class="music-controls">
+            <audio class="birthday-audio" id="birthdayAudio" controls>
+              <source src="assets/birthday.mp3" type="audio/mpeg" />
+
+              Your browser does not support audio.
+            </audio>
+
+            <p
+              id="audioError"
+              style="
+                display: none;
+                margin-top: 10px;
+                color: #e9798f;
+                font-size: 8px;
+                letter-spacing: 1px;
+              "
+            >
+              ⚠ TRACK NOT FOUND — ADD assets/birthday.mp3
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- =====================================================
+         FINAL SECRET MODAL
+    ====================================================== -->
+
+      <div class="final-secret" id="finalSecret" aria-hidden="true">
+        <div class="final-stars-background">
+          <span>✦</span>
+          <span>✧</span>
+          <span>★</span>
+          <span>·</span>
+          <span>✦</span>
+          <span>✧</span>
+          <span>★</span>
+          <span>·</span>
+          <span>✦</span>
+          <span>✧</span>
+          <span>★</span>
+          <span>✦</span>
+        </div>
+
+        <div class="final-secret-box">
+          <div class="final-small">✦ ALL QUESTS COMPLETE ✦</div>
+
+          <div class="final-star-icon">★</div>
+
+          <h1>FINAL SECRET</h1>
+
+          <div class="final-level">LEVEL 26</div>
+
+          <div class="final-divider">─────────────</div>
+
+          <p class="final-message">
+            You found the star.
+
+            <br /><br />
+
+            But the real treasure was never the star.
+
+            <br /><br />
+
+            It was everything that happened along the way.
+
+            <br /><br />
+
+            Every challenge. Every failure. Every victory. Every dream.
+
+            <br /><br />
+
+            And this is only the beginning.
+          </p>
+
+          <div class="final-birthday">HAPPY 26TH BIRTHDAY</div>
+
+          <div class="final-signature">— LUMIÈRE SYSTEM</div>
+
+          <button class="final-close" id="finalClose">RETURN TO WORLD</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+    <script src="js/home.js"></script>
+  </body>
+</html>

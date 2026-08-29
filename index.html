@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Lumière — Level 26</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <!-- ==================================================
+     INTRO / LOADING SCREEN
+================================================== -->
+
+    <section class="intro-screen" id="introScreen">
+      <!-- Ambient light -->
+      <div class="ambient-glow" id="ambientGlow"></div>
+
+      <!-- Central light -->
+      <div class="light-source" id="lightSource">
+        <div class="light-halo"></div>
+
+        <div class="light-core"></div>
+      </div>
+
+      <!-- Stars -->
+      <div class="intro-stars" id="introStars" aria-hidden="true">
+        <span>✦</span>
+        <span>✧</span>
+        <span>✦</span>
+        <span>✧</span>
+        <span>✦</span>
+        <span>✧</span>
+        <span>✦</span>
+        <span>✧</span>
+        <span>✦</span>
+        <span>✧</span>
+      </div>
+
+      <!-- Intro content -->
+      <div class="intro-content">
+        <div class="intro-system">SYSTEM INITIALIZING</div>
+
+        <div class="intro-title">LUMIÈRE</div>
+
+        <div class="intro-status">
+          <span id="lightStatus"> AWAKENING THE LIGHT... </span>
+
+          <span id="lightPercent" class="light-percent"> 0% </span>
+        </div>
+
+        <div class="intro-progress">
+          <div class="intro-progress-fill"></div>
+        </div>
+
+        <div class="intro-loading">INITIALIZING WORLD...</div>
+      </div>
+    </section>
+
+    <!-- ==================================================
+     LOGIN SCREEN
+================================================== -->
+
+    <main class="login-screen" id="loginScreen">
+      <div class="login-background">
+        <div class="grid-lines"></div>
+
+        <div class="scan-line"></div>
+
+        <div class="background-orb orb-one"></div>
+
+        <div class="background-orb orb-two"></div>
+
+        <div class="background-star star-one">✦</div>
+
+        <div class="background-star star-two">✧</div>
+
+        <div class="background-star star-three">✦</div>
+
+        <div class="background-star star-four">✧</div>
+      </div>
+
+      <div class="login-container">
+        <!-- Logo -->
+        <div class="login-logo">
+          <div class="logo-symbol">✦</div>
+
+          <div class="logo-title">LUMIÈRE</div>
+
+          <div class="logo-subtitle">PERSONAL WORLD SYSTEM</div>
+        </div>
+
+        <!-- Login box -->
+        <section class="login-box">
+          <div class="terminal-header">
+            <span> SYSTEM ACCESS </span>
+
+            <span class="terminal-status"> ● ONLINE </span>
+          </div>
+
+          <div class="login-content">
+            <div class="access-label">PLAYER AUTHENTICATION</div>
+
+            <h1>
+              WELCOME,
+              <span>PLAYER</span>
+            </h1>
+
+            <p class="login-description">
+              IDENTIFY YOURSELF TO ENTER THE WORLD OF LUMIÈRE.
+            </p>
+
+            <!-- Player name -->
+            <div class="input-group">
+              <label for="playerName"> PLAYER NAME </label>
+
+              <div class="input-wrapper">
+                <span class="input-icon"> &gt;_ </span>
+
+                <input
+                  type="text"
+                  id="playerName"
+                  placeholder="ENTER PLAYER NAME"
+                  autocomplete="off"
+                  spellcheck="false"
+                />
+              </div>
+            </div>
+
+            <!-- Access code -->
+            <div class="input-group">
+              <label for="accessCode"> ACCESS CODE </label>
+
+              <div class="input-wrapper">
+                <span class="input-icon"> # </span>
+
+                <input
+                  type="password"
+                  id="accessCode"
+                  placeholder="ENTER ACCESS CODE"
+                  inputmode="numeric"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+
+            <!-- Error -->
+            <div
+              class="error-message"
+              id="errorMessage"
+              aria-live="polite"
+            ></div>
+
+            <!-- Start -->
+            <button type="button" class="start-button" id="startButton">
+              <span class="button-icon"> ▶ </span>
+
+              <span> ENTER WORLD </span>
+
+              <span class="button-arrow"> → </span>
+            </button>
+
+            <div class="login-footer">
+              <span> SECURE CONNECTION </span>
+            </div>
+          </div>
+        </section>
+
+        <div class="login-tip">PRESS ENTER TO ACCESS</div>
+      </div>
+    </main>
+
+    <!-- ==================================================
+     ACCESS GRANTED / LEVEL REVEAL
+================================================== -->
+
+    <section class="level-reveal" id="levelReveal">
+      <div class="reveal-grid"></div>
+
+      <div class="reveal-scan"></div>
+
+      <div class="reveal-particles">
+        <span>✦</span>
+        <span>✧</span>
+        <span>✦</span>
+        <span>✧</span>
+        <span>✦</span>
+        <span>✧</span>
+        <span>✦</span>
+        <span>✧</span>
+        <span>✦</span>
+        <span>✧</span>
+      </div>
+
+      <div class="reveal-content">
+        <div class="access-granted">
+          <span class="access-line"></span>
+
+          ACCESS GRANTED
+
+          <span class="access-line"></span>
+        </div>
+
+        <div class="level-label">CURRENT LEVEL</div>
+
+        <div class="level-number">26</div>
+
+        <div class="chapter-title">A NEW CHAPTER</div>
+
+        <p class="chapter-description">
+          THE WORLD IS READY.<br />
+          YOUR NEXT ADVENTURE<br />
+          BEGINS NOW.
+        </p>
+
+        <div class="reveal-divider">
+          <span></span>
+          <span>✦</span>
+          <span></span>
+        </div>
+
+        <button type="button" class="continue-button" id="continueButton">
+          <span> CONTINUE </span>
+
+          <strong> → </strong>
+        </button>
+
+        <div class="reveal-footer">LUMIÈRE WORLD SYSTEM // LEVEL 26</div>
+      </div>
+    </section>
+
+    <!-- ==================================================
+     JAVASCRIPT
+================================================== -->
+
+    <script src="js/script.js"></script>
+  </body>
+</html>
