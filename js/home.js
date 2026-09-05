@@ -1779,3 +1779,104 @@ updateQuestCount();
 document.addEventListener("DOMContentLoaded", () => {
   updateQuestCount();
 });
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+const logoutButton = document.getElementById("logoutButton");
+
+const pageTransitionOut = document.getElementById("pageTransitionOut");
+
+const logoutConfirmToast = document.getElementById("logoutConfirmToast");
+
+const logoutConfirmYes = document.getElementById("logoutConfirmYes");
+
+const logoutConfirmNo = document.getElementById("logoutConfirmNo");
+
+let logoutToastHideTimer = null;
+
+/*
+ * Show the logout confirm toast. Auto-hides after a
+ * while if the player ignores it.
+ */
+
+function showLogoutConfirm() {
+  if (!logoutConfirmToast) {
+    return;
+  }
+
+  logoutConfirmToast.classList.add("show");
+
+  logoutConfirmToast.setAttribute("aria-hidden", "false");
+
+  if (logoutToastHideTimer) {
+    clearTimeout(logoutToastHideTimer);
+  }
+
+  logoutToastHideTimer = setTimeout(hideLogoutConfirm, 6000);
+}
+
+function hideLogoutConfirm() {
+  if (!logoutConfirmToast) {
+    return;
+  }
+
+  logoutConfirmToast.classList.remove("show");
+
+  logoutConfirmToast.setAttribute("aria-hidden", "true");
+
+  if (logoutToastHideTimer) {
+    clearTimeout(logoutToastHideTimer);
+
+    logoutToastHideTimer = null;
+  }
+}
+
+function performLogout() {
+  if (!logoutButton) {
+    return;
+  }
+
+  logoutButton.disabled = true;
+
+  logoutButton.innerHTML = `
+    <span class="logout-icon">⏻</span>
+    <span>LOGGING OUT...</span>
+  `;
+
+  if (pageTransitionOut) {
+    pageTransitionOut.classList.add("active");
+
+    pageTransitionOut.setAttribute("aria-hidden", "false");
+
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 1100);
+  } else {
+    /*
+     * Fallback in case the overlay
+     * element isn't present.
+     */
+
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 300);
+  }
+}
+
+if (logoutButton) {
+  logoutButton.addEventListener("click", showLogoutConfirm);
+}
+
+if (logoutConfirmYes) {
+  logoutConfirmYes.addEventListener("click", () => {
+    hideLogoutConfirm();
+
+    performLogout();
+  });
+}
+
+if (logoutConfirmNo) {
+  logoutConfirmNo.addEventListener("click", hideLogoutConfirm);
+}

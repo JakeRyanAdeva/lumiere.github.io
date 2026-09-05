@@ -3615,7 +3615,6 @@ body.screen-shake {
    RESPONSIVE
 ========================================================= */
 
-
 @media (max-width: 1024px) {
   .menu-button {
     min-width: 190px;
@@ -3858,8 +3857,6 @@ body.screen-shake {
   }
 }
 
-
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -3868,5 +3865,324 @@ body.screen-shake {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* =========================================================
+   LOGOUT BUTTON (FOOTER)
+========================================================= */
+
+.world-footer {
+  align-items: center;
+
+  gap: 14px;
+}
+
+.logout-button {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 8px 14px;
+
+  border: 1px solid rgba(233, 121, 143, 0.4);
+
+  border-radius: 4px;
+
+  background: rgba(24, 18, 41, 0.85);
+
+  color: #e9798f;
+
+  font-family: var(--font);
+
+  font-size: 7px;
+
+  letter-spacing: 1px;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+.logout-icon {
+  font-size: 9px;
+
+  line-height: 1;
+}
+
+.logout-button:hover {
+  color: #ffffff;
+
+  border-color: #e9798f;
+
+  background: rgba(233, 121, 143, 0.12);
+
+  box-shadow: 0 0 14px rgba(233, 121, 143, 0.35);
+
+  transform: translateY(-2px);
+}
+
+.logout-button:active {
+  transform: translateY(0);
+}
+
+.logout-button:focus-visible {
+  outline: 2px solid #e9798f;
+
+  outline-offset: 3px;
+}
+
+.logout-button:disabled {
+  cursor: default;
+
+  opacity: 0.6;
+
+  transform: none;
+}
+
+@media (max-width: 700px) {
+  .world-footer {
+    flex-direction: column;
+
+    gap: 12px;
+  }
+}
+
+/* =========================================================
+   CONFIRM TOAST (LOGOUT)
+   Reuses the secret-toast look, adds Yes/Cancel actions.
+========================================================= */
+
+.confirm-toast {
+  position: fixed;
+
+  top: 25px;
+  left: 50%;
+
+  z-index: 260;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  max-width: min(92%, 460px);
+
+  padding: 14px 18px;
+
+  border: 1px solid rgba(233, 121, 143, 0.5);
+
+  border-radius: 6px;
+
+  background: linear-gradient(145deg, #1c1330, #0a0715);
+
+  box-shadow:
+    0 0 25px rgba(233, 121, 143, 0.25),
+    0 8px 20px rgba(0, 0, 0, 0.4);
+
+  transform: translate(-50%, -140%);
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition:
+    transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.4s ease;
+}
+
+.confirm-toast.show {
+  transform: translate(-50%, 0);
+
+  opacity: 1;
+
+  pointer-events: all;
+}
+
+.confirm-toast-icon {
+  color: #e9798f;
+
+  text-shadow:
+    0 0 8px #e9798f,
+    0 0 18px var(--purple);
+
+  animation: none;
+}
+
+.confirm-toast-actions {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+
+  flex: 0 0 auto;
+}
+
+.confirm-toast-btn {
+  padding: 6px 14px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 4px;
+
+  background: rgba(255, 255, 255, 0.03);
+
+  color: var(--white);
+
+  font-family: var(--font);
+
+  font-size: 7px;
+
+  letter-spacing: 1px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.confirm-toast-btn:hover {
+  transform: translateY(-1px);
+}
+
+.confirm-yes {
+  border-color: rgba(233, 121, 143, 0.6);
+
+  color: #e9798f;
+}
+
+.confirm-yes:hover {
+  background: rgba(233, 121, 143, 0.15);
+
+  box-shadow: 0 0 12px rgba(233, 121, 143, 0.35);
+}
+
+.confirm-no:hover {
+  border-color: var(--cyan);
+
+  color: var(--cyan);
+
+  box-shadow: 0 0 12px rgba(183, 125, 255, 0.25);
+}
+
+@media (max-width: 500px) {
+  .confirm-toast {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    padding: 16px;
+  }
+
+  .confirm-toast-actions {
+    flex-direction: row;
+
+    width: 100%;
+  }
+
+  .confirm-toast-btn {
+    flex: 1;
+  }
+}
+
+/* =========================================================
+   PAGE TRANSITION (OUTGOING / LOGOUT)
+   Mirrors the incoming warp overlay: fades in over the
+   page, a point of light expands, then redirects to the
+   login screen.
+========================================================= */
+
+.page-transition-out {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+
+  background: #030308;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  overflow: hidden;
+
+  transition: opacity 0.5s ease;
+}
+
+.page-transition-out.active {
+  opacity: 1;
+
+  pointer-events: all;
+}
+
+.page-transition-out-glow {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 16px;
+  height: 16px;
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    #ffffff 0%,
+    #e9798f 35%,
+    #8c5ac7 60%,
+    transparent 75%
+  );
+
+  filter: blur(1px);
+
+  transform: translate(-50%, -50%) scale(0);
+}
+
+.page-transition-out.active .page-transition-out-glow {
+  animation: pageTransitionOutGrow 1s cubic-bezier(0.3, 0.8, 0.2, 1) forwards;
+}
+
+.page-transition-out-text {
+  position: relative;
+
+  z-index: 1;
+
+  color: var(--white);
+
+  font-family: var(--font);
+
+  font-size: 10px;
+
+  letter-spacing: 2px;
+
+  opacity: 0;
+}
+
+.page-transition-out.active .page-transition-out-text {
+  animation: pageTransitionOutTextFade 0.6s ease 0.4s forwards;
+}
+
+@keyframes pageTransitionOutGrow {
+  to {
+    transform: translate(-50%, -50%) scale(140);
+  }
+}
+
+@keyframes pageTransitionOutTextFade {
+  to {
+    opacity: 1;
   }
 }

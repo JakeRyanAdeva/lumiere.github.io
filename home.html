@@ -22,6 +22,15 @@
       <div class="page-transition-in-glow"></div>
     </div>
 
+    <!-- =====================================================
+         LOGOUT TRANSITION (OUTGOING)
+    ====================================================== -->
+
+    <div class="page-transition-out" id="pageTransitionOut" aria-hidden="true">
+      <div class="page-transition-out-glow"></div>
+      <div class="page-transition-out-text">LOGGING OUT...</div>
+    </div>
+
     <div class="world">
       <div class="sky" id="sky">
         <div class="moon">
@@ -277,8 +286,50 @@
       <footer class="world-footer">
         <span> LUMIÈRE SYSTEM v26.0 </span>
 
+        <button type="button" class="logout-button" id="logoutButton">
+          <span class="logout-icon">⏻</span>
+          <span>LOG OUT</span>
+        </button>
+
         <span> ✦ HAPPY BIRTHDAY ✦ </span>
       </footer>
+
+      <!-- =====================================================
+         LOGOUT CONFIRM TOAST
+    ====================================================== -->
+
+      <div
+        class="confirm-toast"
+        id="logoutConfirmToast"
+        role="alertdialog"
+        aria-live="polite"
+        aria-hidden="true"
+      >
+        <span class="toast-star confirm-toast-icon">⏻</span>
+
+        <span class="toast-text">
+          LOG OUT OF LUMIÈRE?
+          <small>YOU'LL RETURN TO THE LOGIN SCREEN</small>
+        </span>
+
+        <span class="confirm-toast-actions">
+          <button
+            type="button"
+            class="confirm-toast-btn confirm-yes"
+            id="logoutConfirmYes"
+          >
+            YES
+          </button>
+
+          <button
+            type="button"
+            class="confirm-toast-btn confirm-no"
+            id="logoutConfirmNo"
+          >
+            CANCEL
+          </button>
+        </span>
+      </div>
 
       <!-- =====================================================
          SECRET UNLOCK TOAST
