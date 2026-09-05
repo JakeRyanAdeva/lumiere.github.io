@@ -50,6 +50,77 @@ const lightMessages = [
 ];
 
 /* ==================================================
+   INTRO TIPS
+================================================== */
+
+const introTipEl = document.getElementById("introTip");
+
+const introTips = [
+  "TIP: THE CAKE GRANTS WISHES.",
+
+  "FUN FACT: LEVEL 26 HIDES A SECRET.",
+
+  "REMEMBER TO CHECK YOUR QUESTS.",
+
+  "LOADING 26 YEARS OF MEMORIES...",
+
+  "TIP: NOT ALL STARS ARE IN THE SKY.",
+
+  "HINT: MUSIC MAKES EVERYTHING BETTER.",
+];
+
+let introTipIndex = 0;
+
+let introTipInterval = null;
+
+/*
+ * Show the next tip, fading the old one out first.
+ */
+
+function showNextIntroTip() {
+  if (!introTipEl) {
+    return;
+  }
+
+  introTipEl.classList.remove("show");
+
+  setTimeout(() => {
+    introTipEl.textContent = introTips[introTipIndex];
+
+    introTipIndex = (introTipIndex + 1) % introTips.length;
+
+    introTipEl.classList.add("show");
+  }, 300);
+}
+
+/*
+ * Start rotating tips every ~1.8s while the
+ * light animation plays.
+ */
+
+function startIntroTips() {
+  if (!introTipEl) {
+    return;
+  }
+
+  showNextIntroTip();
+
+  introTipInterval = setInterval(showNextIntroTip, 1800);
+}
+
+/*
+ * Stop rotating tips once the intro finishes.
+ */
+
+function stopIntroTips() {
+  if (introTipInterval) {
+    clearInterval(introTipInterval);
+
+    introTipInterval = null;
+  }
+}
+
+/* ==================================================
    LOGIN ELEMENTS
 ================================================== */
 
@@ -71,8 +142,18 @@ const levelReveal = document.getElementById("levelReveal");
 
 const continueButton = document.getElementById("continueButton");
 
+const pageTransition = document.getElementById("pageTransition");
+
+
+
 const CREDENTIAL_HASH =
   "0c3878574077f24aa13c6aa2b6d2e3db861e32292581c0438e6cdb181c8aaca4";
+
+/*
+ * Hash a string with SHA-256 using the browser's
+ * built-in Web Crypto API and return it as a lowercase
+ * hex string.
+ */
 
 async function sha256Hex(text) {
   const encoder = new TextEncoder();
@@ -100,6 +181,8 @@ function startIntro() {
   }
 
   startLightAnimation();
+
+  startIntroTips();
 }
 
 /* ==================================================
@@ -252,6 +335,8 @@ function finishIntro() {
 
   lightInterval = null;
 
+  stopIntroTips();
+
   if (lightPercent) {
     lightPercent.textContent = "100%";
   }
@@ -356,11 +441,7 @@ async function startGame() {
 
   errorMessage.textContent = "";
 
-  /*
-   * Disable the button briefly while we hash and
-   * check, so double-clicks / double-submits can't
-   * race the login flow.
-   */
+ 
 
   startButton.disabled = true;
 
@@ -480,6 +561,69 @@ function showLevelReveal() {
   if (levelReveal) {
     levelReveal.classList.add("show");
   }
+
+  /*
+   * Count the level number up from 0.
+   */
+
+  animateLevelCountUp();
+}
+
+/* ==================================================
+   LEVEL NUMBER COUNT-UP
+   ==================================================
+================================================== */
+
+function animateLevelCountUp() {
+  const levelNumberEl = document.querySelector(".level-number");
+
+  if (!levelNumberEl) {
+    return;
+  }
+
+  const target = parseInt(levelNumberEl.textContent.trim(), 10);
+
+  if (Number.isNaN(target)) {
+    return;
+  }
+
+ 
+  const startDelay = 650;
+
+  const duration = 900;
+
+
+
+  levelNumberEl.textContent = "0";
+
+  setTimeout(() => {
+    const startTime = performance.now();
+
+    function tick(now) {
+      const elapsed = now - startTime;
+
+      const progress = Math.min(elapsed / duration, 1);
+
+      /*
+       * Ease-out so it starts fast and
+       * settles gently on the final number.
+       */
+
+      const eased = 1 - Math.pow(1 - progress, 3);
+
+      const current = Math.round(eased * target);
+
+      levelNumberEl.textContent = current;
+
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        levelNumberEl.textContent = target;
+      }
+    }
+
+    requestAnimationFrame(tick);
+  }, startDelay);
 }
 
 /* ==================================================
@@ -495,13 +639,25 @@ if (continueButton) {
                 <strong>→</strong>
             `;
 
-    /*
-     * Small transition delay.
-     */
 
-    setTimeout(() => {
-      window.location.href = "home.html";
-    }, 500);
+    if (pageTransition) {
+      pageTransition.classList.add("active");
+
+      pageTransition.setAttribute("aria-hidden", "false");
+
+      setTimeout(() => {
+        window.location.href = "home.html";
+      }, 1100);
+    } else {
+      /*
+       * Fallback in case the overlay
+       * element isn't present.
+       */
+
+      setTimeout(() => {
+        window.location.href = "home.html";
+      }, 500);
+    }
   });
 }
 

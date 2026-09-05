@@ -5,6 +5,398 @@
 ========================================================= */
 
 /* =========================================================
+   GUIDE MASCOT
+   
+========================================================= */
+
+const mascotBubble = document.getElementById("mascotBubble");
+
+const mascotText = document.getElementById("mascotText");
+
+const mascotOrb = document.getElementById("mascotOrb");
+
+const idleTips = [
+  "TRY CLICKING THE CAKE...",
+  "THERE'S A LETTER WAITING FOR YOU.",
+  "MUSIC MIGHT HELP THE MOOD.",
+  "SOMETHING'S HIDDEN NEARBY...",
+  "EVERY QUEST TELLS A STORY.",
+  "26 LEVELS DOWN. MANY MORE TO GO.",
+];
+
+let idleTipIndex = 0;
+
+let mascotHideTimer = null;
+
+let mascotIdleTimer = null;
+
+/*
+ * Show a specific message in the speech bubble for
+ * roughly `duration` ms, then automatically schedule
+ * the next idle tip after it hides.
+ */
+
+function showMascotTip(text, duration = 6000) {
+  if (!mascotBubble || !mascotText) {
+    return;
+  }
+
+  mascotText.textContent = text;
+
+  mascotBubble.classList.add("show");
+
+  if (mascotHideTimer) {
+    clearTimeout(mascotHideTimer);
+  }
+
+  mascotHideTimer = setTimeout(() => {
+    mascotBubble.classList.remove("show");
+  }, duration);
+
+  scheduleNextIdleTip(duration + 3000);
+}
+
+/*
+ * Queue up the next idle tip after a delay.
+ */
+
+function scheduleNextIdleTip(delay = 9000) {
+  if (mascotIdleTimer) {
+    clearTimeout(mascotIdleTimer);
+  }
+
+  mascotIdleTimer = setTimeout(showNextIdleTip, delay);
+}
+
+/*
+ * Show the next tip in the idle rotation.
+ */
+
+function showNextIdleTip() {
+  showMascotTip(idleTips[idleTipIndex], 6000);
+
+  idleTipIndex = (idleTipIndex + 1) % idleTips.length;
+}
+
+/*
+ * Tapping the orb skips straight to the next tip.
+ */
+
+if (mascotOrb) {
+  mascotOrb.addEventListener("click", () => {
+    showNextIdleTip();
+  });
+}
+
+/*
+ * Kick things off with a welcome message shortly
+ * after the page loads (giving the entrance
+ * transition time to finish first).
+ */
+
+setTimeout(() => {
+  showMascotTip("WELCOME BACK, JAKE...", 5000);
+}, 1600);
+
+/* =========================================================
+   IMPACT EFFECT
+   =========================================================
+   A quick full-screen flash paired with a brief shake
+   of the whole page — used on big moments for extra
+   punch (making the wish, opening the final secret).
+========================================================= */
+
+const impactFlash = document.getElementById("impactFlash");
+
+function triggerImpact() {
+  document.body.classList.remove("screen-shake");
+
+  void document.body.offsetWidth;
+
+  document.body.classList.add("screen-shake");
+
+  if (impactFlash) {
+    impactFlash.classList.remove("flash");
+
+    void impactFlash.offsetWidth;
+
+    impactFlash.classList.add("flash");
+  }
+
+  setTimeout(() => {
+    document.body.classList.remove("screen-shake");
+  }, 500);
+}
+
+/* =========================================================
+   KONAMI CODE EASTER EGG
+   =========================================================
+   The classic ↑↑↓↓←→←→BA sequence. On success: a big
+   celebratory banner, a shower of falling coins, the
+   mascot chiming in, and the existing impact effect.
+========================================================= */
+
+const konamiSequenceKeyboard = [
+  "arrowup",
+  "arrowup",
+  "arrowdown",
+  "arrowdown",
+  "arrowleft",
+  "arrowright",
+  "arrowleft",
+  "arrowright",
+  "b",
+  "a",
+];
+
+/*
+ * Touch equivalent: swipe up, up, down, down, left,
+ * right, left, right, then two taps (standing in for
+ * B and A, since a touchscreen has no B/A buttons).
+ */
+
+const konamiSequenceTouch = [
+  "arrowup",
+  "arrowup",
+  "arrowdown",
+  "arrowdown",
+  "arrowleft",
+  "arrowright",
+  "arrowleft",
+  "arrowright",
+  "tap",
+  "tap",
+];
+
+let konamiBuffer = [];
+
+let konamiActive = false;
+
+const konamiBanner = document.getElementById("konamiBanner");
+
+const konamiRain = document.getElementById("konamiRain");
+
+/*
+ * Push a gesture/key into the shared buffer and check
+ * it against both the keyboard and touch sequences.
+ */
+
+function registerKonamiInput(input) {
+  const maxLength = Math.max(
+    konamiSequenceKeyboard.length,
+    konamiSequenceTouch.length,
+  );
+
+  konamiBuffer.push(input);
+
+  if (konamiBuffer.length > maxLength) {
+    konamiBuffer.shift();
+  }
+
+  const matchesSequence = (sequence) => {
+    if (konamiBuffer.length < sequence.length) {
+      return false;
+    }
+
+    const tail = konamiBuffer.slice(konamiBuffer.length - sequence.length);
+
+    return tail.every((value, i) => value === sequence[i]);
+  };
+
+  if (
+    matchesSequence(konamiSequenceKeyboard) ||
+    matchesSequence(konamiSequenceTouch)
+  ) {
+    konamiBuffer = [];
+
+    triggerKonamiCode();
+  }
+}
+
+document.addEventListener("keydown", (event) => {
+  registerKonamiInput(event.key.toLowerCase());
+});
+
+/* =========================================================
+   TOUCH / SWIPE DETECTION
+   =========================================================
+   Tracks touch start/end position to classify each touch
+   as a swipe (up/down/left/right) or a tap, feeding the
+   same buffer used for the keyboard sequence above.
+========================================================= */
+
+let konamiTouchStartX = 0;
+
+let konamiTouchStartY = 0;
+
+let konamiTouchStartTime = 0;
+
+const KONAMI_SWIPE_THRESHOLD = 35;
+
+const KONAMI_TAP_MAX_DISTANCE = 15;
+
+const KONAMI_TAP_MAX_DURATION = 300;
+
+document.addEventListener(
+  "touchstart",
+  (event) => {
+    if (!event.touches || event.touches.length !== 1) {
+      return;
+    }
+
+    konamiTouchStartX = event.touches[0].clientX;
+
+    konamiTouchStartY = event.touches[0].clientY;
+
+    konamiTouchStartTime = Date.now();
+  },
+  { passive: true },
+);
+
+document.addEventListener(
+  "touchend",
+  (event) => {
+    if (!event.changedTouches || event.changedTouches.length !== 1) {
+      return;
+    }
+
+    const endX = event.changedTouches[0].clientX;
+
+    const endY = event.changedTouches[0].clientY;
+
+    const deltaX = endX - konamiTouchStartX;
+
+    const deltaY = endY - konamiTouchStartY;
+
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+    const duration = Date.now() - konamiTouchStartTime;
+
+    /*
+     * Small, quick movement — treat as a tap
+     * (this is what stands in for B and A).
+     */
+
+    if (
+      distance <= KONAMI_TAP_MAX_DISTANCE &&
+      duration <= KONAMI_TAP_MAX_DURATION
+    ) {
+      registerKonamiInput("tap");
+
+      return;
+    }
+
+    /*
+     * Otherwise, classify as a swipe in whichever
+     * direction had the larger movement, as long as
+     * it clears the swipe threshold.
+     */
+
+    if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < KONAMI_SWIPE_THRESHOLD) {
+      return;
+    }
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      registerKonamiInput(deltaX > 0 ? "arrowright" : "arrowleft");
+    } else {
+      registerKonamiInput(deltaY > 0 ? "arrowdown" : "arrowup");
+    }
+  },
+  { passive: true },
+);
+
+/*
+ * Spawn a single falling coin/sparkle at a random
+ * horizontal position, removing itself once it's
+ * fallen off screen.
+ */
+
+function spawnKonamiRainItem() {
+  if (!konamiRain) {
+    return;
+  }
+
+  const symbols = ["🪙", "✦", "✧", "💎"];
+
+  const item = document.createElement("span");
+
+  item.classList.add("konami-rain-item");
+
+  item.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+
+  item.style.left = Math.random() * 100 + "%";
+
+  const duration = 2.5 + Math.random() * 2;
+
+  item.style.animationDuration = `${duration}s`;
+
+  konamiRain.appendChild(item);
+
+  setTimeout(
+    () => {
+      item.remove();
+    },
+    duration * 1000 + 200,
+  );
+}
+
+/*
+ * Trigger the full easter-egg celebration.
+ */
+
+function triggerKonamiCode() {
+  if (konamiActive) {
+    return;
+  }
+
+  konamiActive = true;
+
+  /* Big impact — flash + shake */
+
+  triggerImpact();
+
+  /* Banner */
+
+  if (konamiBanner) {
+    konamiBanner.classList.remove("show");
+
+    void konamiBanner.offsetWidth;
+
+    konamiBanner.classList.add("show");
+
+    konamiBanner.setAttribute("aria-hidden", "false");
+  }
+
+  /* Mascot reaction */
+
+  showMascotTip("OOOH, A SECRET CODE!", 4000);
+
+  /* Coin rain — spawn steadily for ~2.5s */
+
+  let rainCount = 0;
+
+  const rainInterval = setInterval(() => {
+    spawnKonamiRainItem();
+
+    rainCount++;
+
+    if (rainCount >= 30) {
+      clearInterval(rainInterval);
+    }
+  }, 80);
+
+  /* Reset so it can be triggered again later */
+
+  setTimeout(() => {
+    konamiActive = false;
+
+    if (konamiBanner) {
+      konamiBanner.setAttribute("aria-hidden", "true");
+    }
+  }, 3200);
+}
+
+/* =========================================================
    LIGHT PARTICLES
 ========================================================= */
 
@@ -93,7 +485,7 @@ menuButtons.forEach((button) => {
 
     if (modalID === "letterModal") {
       setTimeout(() => {
-        typeLetter();
+        playLetterIntro();
       }, 300);
     }
   });
@@ -643,6 +1035,8 @@ function completeJourneyQuest() {
     check.textContent = "✓";
   }
 
+  showMascotTip("WHAT A JOURNEY!", 4000);
+
   updateQuestCount();
 }
 
@@ -678,50 +1072,167 @@ function updateQuestCount() {
 
 const letterContent = document.getElementById("letterContent");
 
-const birthdayMessage = `Dear Jake,
+const letterCursorEl = document.getElementById("letterCursor");
 
-Today marks another chapter.
+const letterIntro = document.getElementById("letterIntro");
 
-Twenty-six years of memories,
-lessons, challenges, dreams,
-mistakes, victories,
-and moments that made you
-who you are today.
+const letterIntroLabel = document.getElementById("letterIntroLabel");
 
-The journey wasn't always easy,
-but every level brought
-something worth learning.
+const birthdayMessage = `Wow.
 
-And now...
+This is weird.
 
-LEVEL 26.
+Writing a letter to myself,
+who's basically ancient now.
 
-A new chapter begins.
+26? Whoa.
 
-There are still places to go,
-things to build,
-people to meet,
-and dreams to chase.
+I hope you're still good-looking.
 
-The next part of the story
-has not been written yet.
+I hope you haven't become boring,
+like somehow you got left behind by time.
 
-So keep moving.
+Please tell me that's not you.
 
-Keep learning.
+Okay, enough.
 
-Keep creating.
+Hi.
 
-And most importantly,
-keep enjoying the journey.
+It's me.
+Or… you from six years ago.
 
-Happy 26th Birthday.
+I'm 20 right now,
+and honestly, I still don't have everything figured out.
 
-Welcome to the next level.
+I thought maybe by 26,
+you'd finally have all the answers.
 
-— Jake`;
+But if you don't, that's okay.
+
+I just wanted to tell you something.
+
+Thank you.
+
+Thank you for still being here.
+
+For getting up on the mornings
+when it was hard to.
+
+For carrying the things
+you couldn't explain to anyone.
+
+I know you've had quiet battles.
+Battles nobody else could see.
+
+And I don't know what the next six years
+will bring you.
+
+I don't know how many things will change,
+how many dreams will stay,
+or how many you'll have to let go of.
+
+But I hope you kept going.
+
+I hope you kept fighting for us,
+even when it felt pointless.
+
+Because right now, at 20,
+I'm still dreaming.
+
+I'm still hoping that someday
+we'll become someone we're proud of.
+
+So if you're reading this now,
+I hope you know—
+
+I'm proud of you.
+
+Not because you figured everything out.
+
+But because you made it this far.
+
+So happy birthday, future me.
+
+Keep going.
+
+Keep fighting.
+
+And whatever happens,
+I hope you never forget the dreams,
+the hopes, and the person
+you used to be.
+
+I'm proud of you.
+
+— Jake, 20
+
+And one more thing...
+
+Don't forget me.
+`;
 
 let letterStarted = false;
+
+/* =========================================================
+   PLAY LETTER INTRO
+   =========================================================
+========================================================= */
+
+function playLetterIntro() {
+  /* Already played before — just make sure the
+     finished letter is visible, no need to replay. */
+
+  if (letterStarted) {
+    if (letterIntro) {
+      letterIntro.classList.add("show", "decoded");
+    }
+
+    if (letterIntroLabel) {
+      letterIntroLabel.textContent = "OLD MEMORY FILE DECODED SUCCESSFULLY";
+    }
+
+    if (letterContent) {
+      letterContent.classList.add("visible");
+    }
+
+    if (letterCursorEl) {
+      letterCursorEl.classList.add("visible");
+    }
+
+    return;
+  }
+
+  if (!letterIntro) {
+    typeLetter();
+
+    return;
+  }
+
+  letterIntro.classList.add("show");
+
+  setTimeout(() => {
+    /* Settle into the "decoded" confirmation state —
+       stays visible as a small header above the letter. */
+
+    letterIntro.classList.add("decoded");
+
+    if (letterIntroLabel) {
+      letterIntroLabel.textContent = "OLD MEMORY FILE DECODED SUCCESSFULLY";
+    }
+
+    setTimeout(() => {
+      if (letterContent) {
+        letterContent.classList.add("visible");
+      }
+
+      if (letterCursorEl) {
+        letterCursorEl.classList.add("visible");
+      }
+
+      typeLetter();
+    }, 700);
+  }, 1800);
+}
 
 /* =========================================================
    TYPE LETTER
@@ -793,6 +1304,8 @@ function completeLetterQuest() {
     questText.textContent = "READ THE BIRTHDAY LETTER";
   }
 
+  showMascotTip("THAT LETTER THOUGH...", 4000);
+
   updateQuestCount();
 }
 
@@ -846,6 +1359,14 @@ function activateCake() {
   /* Celebration */
 
   createCakeCelebration();
+
+  /* Impact effect */
+
+  triggerImpact();
+
+  /* Mascot reaction */
+
+  showMascotTip("NICE WISH!", 4000);
 
   /* Quest */
 
@@ -964,7 +1485,56 @@ const finalSecret = document.getElementById("finalSecret");
 
 const finalClose = document.getElementById("finalClose");
 
+const secretToast = document.getElementById("secretToast");
+
 let finalStarUnlocked = false;
+
+let secretToastTimer = null;
+
+/* =========================================================
+   SHOW SECRET TOAST
+========================================================= */
+
+function showSecretToast() {
+  if (!secretToast) {
+    return;
+  }
+
+  /*
+   * Clear any previous auto-hide timer so repeat
+   * triggers don't cut the toast off early.
+   */
+
+  if (secretToastTimer) {
+    clearTimeout(secretToastTimer);
+
+    secretToastTimer = null;
+  }
+
+  secretToast.classList.add("show");
+
+  secretToastTimer = setTimeout(() => {
+    hideSecretToast();
+  }, 4500);
+}
+
+/* =========================================================
+   HIDE SECRET TOAST
+========================================================= */
+
+function hideSecretToast() {
+  if (!secretToast) {
+    return;
+  }
+
+  secretToast.classList.remove("show");
+
+  if (secretToastTimer) {
+    clearTimeout(secretToastTimer);
+
+    secretToastTimer = null;
+  }
+}
 
 /* =========================================================
    INITIAL STAR STATE
@@ -1006,6 +1576,18 @@ function unlockFinalStar() {
   if (footer) {
     footer.textContent = "★ FINAL SECRET UNLOCKED ★";
   }
+
+  /* -----------------------------------------------
+     TOAST NOTIFICATION
+  ------------------------------------------------ */
+
+  showSecretToast();
+
+  /* -----------------------------------------------
+     MASCOT REACTION
+  ------------------------------------------------ */
+
+  showMascotTip("PSST... FIND THE STAR.", 5000);
 }
 
 /* =========================================================
@@ -1037,6 +1619,16 @@ if (hiddenStar) {
 }
 
 /* =========================================================
+   TOAST CLICK TO DISMISS
+========================================================= */
+
+if (secretToast) {
+  secretToast.addEventListener("click", () => {
+    hideSecretToast();
+  });
+}
+
+/* =========================================================
    OPEN FINAL SECRET
 ========================================================= */
 
@@ -1044,6 +1636,10 @@ function openFinalSecret() {
   if (!finalSecret || !finalStarUnlocked) {
     return;
   }
+
+  /* Dismiss the toast once they've found the star */
+
+  hideSecretToast();
 
   /* -----------------------------------------------
      Star animation
@@ -1067,6 +1663,8 @@ function openFinalSecret() {
     finalSecret.setAttribute("aria-hidden", "false");
 
     document.body.style.overflow = "hidden";
+
+    triggerImpact();
   }, 500);
 }
 
