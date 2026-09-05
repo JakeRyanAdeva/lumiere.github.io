@@ -18,11 +18,11 @@
   </head>
 
   <body>
-    <div class="world">
-      <!-- =====================================================
-         SKY
-    ====================================================== -->
+    <div class="page-transition-in" aria-hidden="true">
+      <div class="page-transition-in-glow"></div>
+    </div>
 
+    <div class="world">
       <div class="sky" id="sky">
         <div class="moon">
           <span class="moon-crater crater-one"></span>
@@ -44,6 +44,30 @@
         <span class="star star-12">✦</span>
 
         <div class="light-particles" id="lightParticles"></div>
+      </div>
+
+      <div class="pixel-decor" aria-hidden="true">
+        <span class="decor-item decor-coin coin-1">🪙</span>
+        <span class="decor-item decor-coin coin-2">🪙</span>
+        <span class="decor-item decor-coin coin-3">🪙</span>
+        <span class="decor-item decor-coin coin-4">🪙</span>
+        <span class="decor-item decor-coin coin-5">🪙</span>
+
+        <span class="decor-item decor-controller controller-1">🎮</span>
+        <span class="decor-item decor-controller controller-2">🎮</span>
+        <span class="decor-item decor-controller controller-3">🕹️</span>
+
+        <span class="decor-item decor-sparkle sparkle-a">✦</span>
+        <span class="decor-item decor-sparkle sparkle-b">✧</span>
+        <span class="decor-item decor-sparkle sparkle-c">✦</span>
+        <span class="decor-item decor-sparkle sparkle-d">✧</span>
+        <span class="decor-item decor-sparkle sparkle-e">✦</span>
+        <span class="decor-item decor-sparkle sparkle-f">✧</span>
+
+        <span class="decor-item decor-gem gem-1">💎</span>
+        <span class="decor-item decor-gem gem-2">💎</span>
+
+        <span class="decor-item decor-trophy trophy-1">🏆</span>
       </div>
 
       <!-- =====================================================
@@ -193,19 +217,17 @@
         ================================================== -->
 
         <section class="game-menu">
+          <button class="menu-button" data-modal="musicModal">
+            <span class="menu-icon">♫</span>
+            <span>BIRTHDAY MUSIC</span>
+          </button>
           <button class="menu-button" data-modal="journeyModal">
             <span class="menu-icon">◈</span>
             <span>MY JOURNEY</span>
           </button>
-
           <button class="menu-button" data-modal="letterModal">
             <span class="menu-icon">✉</span>
             <span>BIRTHDAY LETTER</span>
-          </button>
-
-          <button class="menu-button" data-modal="musicModal">
-            <span class="menu-icon">♫</span>
-            <span>BIRTHDAY MUSIC</span>
           </button>
         </section>
 
@@ -221,14 +243,6 @@
           </div>
 
           <div class="quest-list">
-            <!-- CAKE QUEST -->
-
-            <div class="quest-item" id="cakeQuest">
-              <span class="quest-check"> □ </span>
-
-              <span class="quest-text"> MAKE A WISH </span>
-            </div>
-
             <!-- JOURNEY QUEST -->
 
             <div class="quest-item" id="journeyQuest">
@@ -244,6 +258,14 @@
 
               <span class="quest-text"> READ THE BIRTHDAY LETTER </span>
             </div>
+
+            <!-- CAKE QUEST -->
+
+            <div class="quest-item" id="cakeQuest">
+              <span class="quest-check"> □ </span>
+
+              <span class="quest-text"> MAKE A WISH </span>
+            </div>
           </div>
         </section>
       </main>
@@ -257,6 +279,24 @@
 
         <span> ✦ HAPPY BIRTHDAY ✦ </span>
       </footer>
+
+      <!-- =====================================================
+         SECRET UNLOCK TOAST
+    ====================================================== -->
+
+      <div
+        class="secret-toast"
+        id="secretToast"
+        role="status"
+        aria-live="polite"
+      >
+        <span class="toast-star">★</span>
+
+        <span class="toast-text">
+          SECRET QUEST UNLOCKED
+          <small>FIND THE HIDDEN STAR</small>
+        </span>
+      </div>
 
       <!-- =====================================================
          HIDDEN STAR
@@ -423,11 +463,21 @@
 
           <h2 class="modal-title">BIRTHDAY LETTER</h2>
 
-          <p class="modal-subtitle">A MESSAGE FROM YOUR FUTURE SELF.</p>
+          <p class="modal-subtitle">A MESSAGE FROM YOUR PAST SELF.</p>
+
+          <div class="letter-intro" id="letterIntro">
+            <div class="letter-envelope" id="letterEnvelope">✉</div>
+
+            <div class="letter-intro-label" id="letterIntroLabel">
+              DECODING OLD MEMORY FILE...
+            </div>
+
+            <div class="letter-intro-sub">FROM: JAKE, AGE 20</div>
+          </div>
 
           <div class="letter-content" id="letterContent"></div>
 
-          <div class="letter-cursor">█</div>
+          <div class="letter-cursor" id="letterCursor">█</div>
         </div>
       </div>
 
@@ -535,6 +585,51 @@
         </div>
       </div>
     </div>
+
+    <!-- =====================================================
+         GUIDE MASCOT
+    ====================================================== -->
+
+    <div class="mascot" aria-hidden="true">
+      <div class="mascot-bubble" id="mascotBubble">
+        <span id="mascotText"></span>
+      </div>
+
+      <div class="mascot-orb" id="mascotOrb" title="Tap for a tip">✨</div>
+    </div>
+
+    <!-- =====================================================
+         IMPACT FLASH
+    ====================================================== -->
+
+    <div class="impact-flash" id="impactFlash" aria-hidden="true"></div>
+
+    <!-- =====================================================
+         KONAMI CODE EASTER EGG
+         Hidden until the classic ↑↑↓↓←→←→BA sequence is
+         entered. Shows a banner and a shower of coins.
+    ====================================================== -->
+    <div
+      class="konami-banner"
+      id="konamiBanner"
+      role="status"
+      aria-live="polite"
+      aria-hidden="true"
+    >
+      <div class="konami-banner-title">★ CHEAT CODE ACTIVATED ★</div>
+
+      <div class="konami-banner-subtitle">INFINITE WISHES GRANTED</div>
+    </div>
+
+    <div class="konami-rain" id="konamiRain" aria-hidden="true"></div>
+
+    <!-- =====================================================
+         CRT SCREEN OVERLAY
+    ====================================================== -->
+
+    <div class="crt-vignette" aria-hidden="true"></div>
+
+    <div class="crt-overlay" aria-hidden="true"></div>
 
     <!-- =========================================================
      JAVASCRIPT
