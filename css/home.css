@@ -48,6 +48,510 @@ body {
   font-family: var(--font);
 
   overflow-x: hidden;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================================================
+   TOUCH INTERACTION IMPROVEMENTS
+   =========================================================
+   Prevents the double-tap-zoom gesture and the ~300ms
+   tap delay some mobile browsers apply on these elements
+   — especially important since taps also drive the
+   Konami code gesture sequence.
+========================================================= */
+
+.cake,
+.menu-button,
+.mascot-orb,
+.final-close,
+.journey-continue,
+.journey-modal-continue {
+  touch-action: manipulation;
+}
+
+/* =========================================================
+   GUIDE MASCOT
+   =========================================================
+   A small floating light-spirit in the corner that shows
+   a speech bubble — cycling through idle tips on its own,
+   and reacting with a quip whenever something notable
+   happens (a wish, a finished letter, a finished journey).
+
+   Click/tap the orb to skip to the next tip early.
+========================================================= */
+
+.mascot {
+  position: fixed;
+
+  left: 18px;
+  bottom: 25px;
+
+  z-index: 30;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  gap: 8px;
+
+  pointer-events: none;
+}
+
+.mascot-orb {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-size: 16px;
+
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.95),
+    rgba(183, 125, 255, 0.55) 60%,
+    transparent 80%
+  );
+
+  box-shadow:
+    0 0 14px rgba(183, 125, 255, 0.6),
+    0 0 30px rgba(183, 125, 255, 0.3);
+
+  cursor: pointer;
+
+  pointer-events: auto;
+
+  animation: mascotFloat 3s ease-in-out infinite;
+}
+
+@keyframes mascotFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.mascot-bubble {
+  position: relative;
+
+  max-width: 210px;
+
+  padding: 10px 14px;
+
+  border: 1px solid rgba(183, 125, 255, 0.45);
+
+  border-radius: 8px;
+
+  background: linear-gradient(145deg, #1c1330, #0a0715);
+
+  box-shadow: 0 0 15px rgba(183, 125, 255, 0.2);
+
+  color: var(--white);
+
+  font-family: var(--font);
+
+  font-size: 8px;
+
+  line-height: 1.7;
+
+  letter-spacing: 0.5px;
+
+  opacity: 0;
+
+  transform: translateY(8px) scale(0.95);
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.mascot-bubble.show {
+  opacity: 1;
+
+  transform: translateY(0) scale(1);
+}
+
+.mascot-bubble::after {
+  content: "";
+
+  position: absolute;
+
+  left: 14px;
+  bottom: -6px;
+
+  width: 0;
+  height: 0;
+
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #0a0715;
+}
+
+/* =========================================================
+   IMPACT FLASH + SCREEN SHAKE
+   
+========================================================= */
+
+.impact-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 1800;
+
+  background: #ffffff;
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+.impact-flash.flash {
+  animation: impactFlashAnim 0.5s ease;
+}
+
+@keyframes impactFlashAnim {
+  0% {
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 0.85;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes screenShake {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  10% {
+    transform: translate(-6px, 4px);
+  }
+
+  20% {
+    transform: translate(6px, -4px);
+  }
+
+  30% {
+    transform: translate(-5px, 3px);
+  }
+
+  40% {
+    transform: translate(5px, -3px);
+  }
+
+  50% {
+    transform: translate(-3px, 2px);
+  }
+
+  60% {
+    transform: translate(3px, -2px);
+  }
+
+  70% {
+    transform: translate(-2px, 1px);
+  }
+
+  80% {
+    transform: translate(2px, -1px);
+  }
+
+  90% {
+    transform: translate(-1px, 0);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+body.screen-shake {
+  animation: screenShake 0.5s ease;
+}
+
+/* =========================================================
+   KONAMI CODE EASTER EGG
+   =========================================================
+   Hidden until ↑↑↓↓←→←→BA is entered. Shows a big
+   celebratory banner and a shower of falling coins.
+========================================================= */
+
+.konami-banner {
+  position: fixed;
+
+  top: 50%;
+  left: 50%;
+
+  z-index: 1900;
+
+  transform: translate(-50%, -50%) scale(0.8);
+
+  text-align: center;
+
+  padding: 24px 36px;
+
+  border: 2px solid rgba(214, 181, 255, 0.7);
+
+  border-radius: 8px;
+
+  background: linear-gradient(145deg, #1c1330, #0a0715);
+
+  box-shadow:
+    0 0 40px rgba(183, 125, 255, 0.5),
+    0 10px 30px rgba(0, 0, 0, 0.5);
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+.konami-banner.show {
+  animation: konamiBannerPop 3s ease forwards;
+}
+
+@keyframes konamiBannerPop {
+  0% {
+    opacity: 0;
+
+    transform: translate(-50%, -50%) scale(0.7);
+  }
+
+  15% {
+    opacity: 1;
+
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+
+  25% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  85% {
+    opacity: 1;
+
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+}
+
+.konami-banner-title {
+  color: var(--gold);
+
+  font-family: var(--font);
+
+  font-size: 13px;
+
+  letter-spacing: 2px;
+
+  text-shadow:
+    0 0 10px var(--gold),
+    0 0 25px var(--purple);
+}
+
+.konami-banner-subtitle {
+  margin-top: 12px;
+
+  color: var(--cyan);
+
+  font-family: var(--font);
+
+  font-size: 8px;
+
+  letter-spacing: 1.5px;
+}
+
+.konami-rain {
+  position: fixed;
+  inset: 0;
+  z-index: 1850;
+
+  pointer-events: none;
+
+  overflow: hidden;
+}
+
+.konami-rain-item {
+  position: absolute;
+
+  top: -40px;
+
+  font-size: 20px;
+
+  filter: drop-shadow(0 0 8px rgba(214, 181, 255, 0.6));
+
+  animation: konamiRainFall linear forwards;
+}
+
+@keyframes konamiRainFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+
+    opacity: 0.8;
+  }
+}
+
+/* =========================================================
+   CRT SCREEN OVERLAY
+   =========================================================
+   A decorative arcade-screen effect layered over the
+   whole page: horizontal scanlines + a soft vignette
+   darkening the edges, with a very slow, gentle flicker.
+
+   Kept intentionally subtle and slow (a 6s cycle) —
+   nothing rapid or high-contrast, so it stays comfortable
+   to look at for extended periods.
+
+   pointer-events: none on both layers so they never
+   block clicks on the real UI underneath.
+========================================================= */
+
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+
+  pointer-events: none;
+
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.16) 0px,
+    rgba(0, 0, 0, 0.16) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+
+  mix-blend-mode: multiply;
+
+  animation: crtFlicker 6s ease-in-out infinite;
+}
+
+.crt-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 1499;
+
+  pointer-events: none;
+
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+}
+
+@keyframes crtFlicker {
+  0%,
+  100% {
+    opacity: 0.92;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* =========================================================
+   PAGE TRANSITION (INCOMING)
+   =========================================================
+   Mirrors the outgoing "warp" overlay used on the login
+   screen: a bright point of light contracts and the
+   overlay fades away, revealing the world underneath.
+   Runs automatically via CSS animation on page load —
+   no JS required, so it can't get stuck if anything
+   else on the page has an error.
+========================================================= */
+
+.page-transition-in {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #030308;
+
+  pointer-events: none;
+
+  overflow: hidden;
+
+  animation: pageTransitionInFade 1.5s ease forwards;
+}
+
+.page-transition-in-glow {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 16px;
+  height: 16px;
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    #ffffff 0%,
+    #d6b5ff 35%,
+    #8c5ac7 60%,
+    transparent 75%
+  );
+
+  filter: blur(1px);
+
+  transform: translate(-50%, -50%) scale(140);
+
+  animation: pageTransitionInShrink 1s cubic-bezier(0.3, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes pageTransitionInShrink {
+  to {
+    transform: translate(-50%, -50%) scale(0);
+  }
+}
+
+@keyframes pageTransitionInFade {
+  0%,
+  60% {
+    opacity: 1;
+
+    visibility: visible;
+  }
+
+  100% {
+    opacity: 0;
+
+    visibility: hidden;
+  }
 }
 
 /* =========================================================
@@ -280,6 +784,300 @@ body {
     transform: translateY(-110vh);
 
     opacity: 0;
+  }
+}
+
+/* =========================================================
+   PIXEL DECORATIONS
+   =========================================================
+   Floating coins, controller icons, and sparkles
+   scattered around the page. Purely decorative and
+   fixed to the viewport (so they don't scroll away),
+   pointer-events: none so they never block clicks.
+========================================================= */
+
+.pixel-decor {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+
+  pointer-events: none;
+
+  overflow: hidden;
+}
+
+.decor-item {
+  position: absolute;
+
+  opacity: 0.85;
+}
+
+/* ---------------------------------------------------------
+   COINS
+   A gentle bob with a horizontal squash at the midpoint,
+   simulating a spinning coin.
+--------------------------------------------------------- */
+
+.decor-coin {
+  font-size: 20px;
+
+  filter: drop-shadow(0 0 8px rgba(214, 181, 255, 0.5));
+
+  animation: coinSpin 3.4s ease-in-out infinite;
+}
+
+@keyframes coinSpin {
+  0%,
+  100% {
+    transform: translateY(0) scaleX(1);
+  }
+
+  50% {
+    transform: translateY(-12px) scaleX(0.15);
+  }
+}
+
+.coin-1 {
+  top: 18%;
+  left: 6%;
+
+  animation-delay: 0s;
+}
+
+.coin-2 {
+  top: 55%;
+  right: 5%;
+
+  animation-delay: 1.1s;
+}
+
+.coin-3 {
+  bottom: 14%;
+  left: 9%;
+
+  animation-delay: 2.2s;
+}
+
+.coin-4 {
+  top: 35%;
+  left: 40%;
+
+  animation-delay: 0.7s;
+}
+
+.coin-5 {
+  bottom: 20%;
+  right: 30%;
+
+  animation-delay: 1.7s;
+}
+
+/* ---------------------------------------------------------
+   CONTROLLERS
+   A slower bob with a slight rocking rotation.
+--------------------------------------------------------- */
+
+.decor-controller {
+  font-size: 22px;
+
+  filter: drop-shadow(0 0 8px rgba(183, 125, 255, 0.5));
+
+  animation: controllerBob 5s ease-in-out infinite;
+}
+
+@keyframes controllerBob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-6deg);
+  }
+
+  50% {
+    transform: translateY(-14px) rotate(6deg);
+  }
+}
+
+.controller-1 {
+  top: 28%;
+  right: 8%;
+
+  animation-delay: 0.4s;
+}
+
+.controller-2 {
+  top: 68%;
+  left: 5%;
+
+  animation-delay: 2.4s;
+}
+
+.controller-3 {
+  top: 8%;
+  left: 35%;
+
+  animation-delay: 1.6s;
+}
+
+/* ---------------------------------------------------------
+   SPARKLES
+   A slow twinkle — scale and opacity pulse, matching
+   the sparkle style already used elsewhere on the page.
+--------------------------------------------------------- */
+
+.decor-sparkle {
+  color: var(--gold);
+
+  font-size: 14px;
+
+  text-shadow:
+    0 0 8px var(--gold),
+    0 0 16px var(--purple);
+
+  animation: decorSparkleTwinkle 3s ease-in-out infinite;
+}
+
+@keyframes decorSparkleTwinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+
+    transform: scale(1.3);
+  }
+}
+
+.sparkle-a {
+  top: 10%;
+  right: 20%;
+
+  animation-delay: 0.2s;
+}
+
+.sparkle-b {
+  top: 45%;
+  left: 15%;
+
+  animation-delay: 1s;
+}
+
+.sparkle-c {
+  bottom: 32%;
+  right: 16%;
+
+  animation-delay: 1.8s;
+}
+
+.sparkle-d {
+  bottom: 10%;
+  left: 22%;
+
+  animation-delay: 2.6s;
+}
+
+.sparkle-e {
+  top: 22%;
+  left: 55%;
+
+  animation-delay: 0.6s;
+}
+
+.sparkle-f {
+  bottom: 45%;
+  right: 42%;
+
+  animation-delay: 2s;
+}
+
+/* ---------------------------------------------------------
+   GEMS
+   Reuses the coin spin, in cyan, for a "loot drop" feel
+   distinct from the gold coins.
+--------------------------------------------------------- */
+
+.decor-gem {
+  font-size: 18px;
+
+  filter: drop-shadow(0 0 8px rgba(201, 156, 255, 0.6));
+
+  animation: coinSpin 3.8s ease-in-out infinite;
+}
+
+.gem-1 {
+  top: 50%;
+  left: 8%;
+
+  animation-delay: 0.9s;
+}
+
+.gem-2 {
+  top: 15%;
+  right: 25%;
+
+  animation-delay: 2.1s;
+}
+
+/* ---------------------------------------------------------
+   TROPHY
+   A gentle bounce with a scale pulse, like a highlighted
+   achievement icon.
+--------------------------------------------------------- */
+
+.decor-trophy {
+  font-size: 20px;
+
+  filter: drop-shadow(0 0 10px var(--gold));
+
+  animation: trophyBounce 2.6s ease-in-out infinite;
+}
+
+@keyframes trophyBounce {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-10px) scale(1.15);
+  }
+}
+
+.trophy-1 {
+  top: 60%;
+  right: 6%;
+
+  animation-delay: 0.5s;
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+   Thin the decorations out on smaller screens so they
+   don't clutter the more compact mobile layout.
+--------------------------------------------------------- */
+
+@media (max-width: 700px) {
+  .decor-controller,
+  .coin-3,
+  .coin-4,
+  .coin-5,
+  .sparkle-c,
+  .sparkle-d,
+  .sparkle-e,
+  .sparkle-f,
+  .decor-gem,
+  .decor-trophy {
+    display: none;
+  }
+
+  .decor-coin {
+    font-size: 16px;
+  }
+
+  .decor-sparkle {
+    font-size: 11px;
   }
 }
 
@@ -517,7 +1315,7 @@ body {
   transform: translateY(-5px) scale(1.02);
 
   filter: drop-shadow(0 15px 18px rgba(0, 0, 0, 0.45))
-    drop-shadow(0 0 18px rgba(183, 125, 255, 0.35));
+    drop-shadow(0 0 24px rgba(183, 125, 255, 0.45));
 }
 
 .cake:focus-visible {
@@ -622,12 +1420,16 @@ body {
     transform: translateX(-50%) translateY(2px) scale(0.78);
 
     opacity: 0.7;
+
+    filter: hue-rotate(0deg) brightness(1);
   }
 
   to {
     transform: translateX(-50%) translateY(-2px) scale(1.15);
 
     opacity: 1;
+
+    filter: hue-rotate(12deg) brightness(1.2);
   }
 }
 
@@ -1383,10 +2185,19 @@ body {
 .hidden-star {
   position: fixed;
 
-  right: 25px;
-  bottom: 55px;
+  right: 12px;
+  bottom: 42px;
 
   z-index: 20;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
 
   border: none;
 
@@ -1399,6 +2210,8 @@ body {
   font-size: 18px;
 
   cursor: pointer;
+
+  touch-action: manipulation;
 
   transition: 0.3s ease;
 }
@@ -1498,6 +2311,148 @@ body {
 }
 
 /* =========================================================
+   SECRET UNLOCK TOAST
+========================================================= */
+
+.secret-toast {
+  position: fixed;
+
+  top: 25px;
+  left: 50%;
+
+  z-index: 250;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  max-width: min(92%, 420px);
+
+  padding: 14px 20px;
+
+  border: 1px solid rgba(214, 181, 255, 0.5);
+
+  border-radius: 6px;
+
+  background: linear-gradient(145deg, #1c1330, #0a0715);
+
+  box-shadow:
+    0 0 25px rgba(183, 125, 255, 0.3),
+    0 8px 20px rgba(0, 0, 0, 0.4);
+
+  transform: translate(-50%, -140%);
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition:
+    transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.4s ease;
+}
+
+.secret-toast.show {
+  transform: translate(-50%, 0);
+
+  opacity: 1;
+}
+
+.toast-star {
+  flex: 0 0 auto;
+
+  color: var(--gold);
+
+  font-size: 22px;
+
+  text-shadow:
+    0 0 8px var(--gold),
+    0 0 18px var(--purple);
+
+  animation: toastStarSpin 1.8s ease-in-out infinite;
+}
+
+@keyframes toastStarSpin {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+
+  50% {
+    transform: scale(1.25) rotate(20deg);
+  }
+}
+
+.toast-text {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+
+  color: var(--white);
+
+  font-family: var(--font);
+
+  font-size: 9px;
+
+  letter-spacing: 1px;
+
+  line-height: 1.6;
+}
+
+.toast-text small {
+  color: var(--muted);
+
+  font-size: 7px;
+
+  letter-spacing: 1.5px;
+}
+
+@media (max-width: 500px) {
+  .secret-toast {
+    top: 15px;
+
+    padding: 12px 16px;
+
+    gap: 10px;
+  }
+
+  .toast-star {
+    font-size: 18px;
+  }
+
+  .toast-text {
+    font-size: 8px;
+  }
+
+  .toast-text small {
+    font-size: 6px;
+  }
+}
+
+@media (max-width: 450px) {
+  .mascot {
+    left: 12px;
+    bottom: 20px;
+  }
+
+  .mascot-bubble {
+    max-width: 160px;
+
+    font-size: 7px;
+  }
+
+  .mascot-orb {
+    width: 28px;
+    height: 28px;
+
+    font-size: 14px;
+  }
+}
+
+/* =========================================================
    MODALS
 ========================================================= */
 
@@ -1568,8 +2523,17 @@ body {
 .close-modal {
   position: absolute;
 
-  top: 15px;
-  right: 18px;
+  top: 6px;
+  right: 6px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
 
   border: none;
 
@@ -1582,6 +2546,8 @@ body {
   font-size: 20px;
 
   cursor: pointer;
+
+  touch-action: manipulation;
 }
 
 .close-modal:hover {
@@ -2080,6 +3046,14 @@ body {
   white-space: pre-wrap;
 
   overflow-wrap: anywhere;
+
+  opacity: 0;
+
+  transition: opacity 0.5s ease;
+}
+
+.letter-content.visible {
+  opacity: 1;
 }
 
 .letter-cursor {
@@ -2087,7 +3061,13 @@ body {
 
   color: var(--cyan);
 
+  display: none;
+
   animation: cursorBlink 1s infinite;
+}
+
+.letter-cursor.visible {
+  display: block;
 }
 
 @keyframes cursorBlink {
@@ -2100,6 +3080,116 @@ body {
   100% {
     opacity: 0;
   }
+}
+
+/* =========================================================
+   LETTER INTRO
+   =========================================================
+   A brief "decoding an old memory" sequence that plays
+   before the letter itself types out, the first time the
+   modal is opened.
+========================================================= */
+
+.letter-intro {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 25px;
+
+  padding: 22px 20px;
+
+  border: 1px solid rgba(183, 125, 255, 0.2);
+
+  background: rgba(4, 3, 10, 0.5);
+
+  opacity: 0;
+
+  transform: scale(0.92);
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    padding 0.4s ease;
+}
+
+.letter-intro.show {
+  opacity: 1;
+
+  transform: scale(1);
+}
+
+.letter-envelope {
+  font-size: 32px;
+
+  color: var(--gold);
+
+  text-shadow:
+    0 0 12px var(--gold),
+    0 0 28px var(--purple);
+
+  animation: envelopeFloat 2.2s ease-in-out infinite;
+
+  transition: transform 0.4s ease;
+}
+
+@keyframes envelopeFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-3deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(3deg);
+  }
+}
+
+/*
+   Once the file has "decoded", the envelope
+   settles instead of continuing to float —
+   a small resolved, satisfying beat.
+*/
+
+.letter-intro.decoded .letter-envelope {
+  animation-play-state: paused;
+
+  transform: translateY(0) rotate(0deg);
+}
+
+.letter-intro-label {
+  color: var(--cyan);
+
+  font-family: var(--font);
+
+  font-size: 9px;
+
+  letter-spacing: 2px;
+
+  text-align: center;
+
+  transition: color 0.4s ease;
+}
+
+.letter-intro.decoded .letter-intro-label {
+  color: var(--gold);
+
+  text-shadow: 0 0 10px rgba(214, 181, 255, 0.5);
+}
+
+.letter-intro-sub {
+  color: var(--muted);
+
+  font-family: var(--font);
+
+  font-size: 7px;
+
+  letter-spacing: 1.5px;
 }
 
 /* =========================================================
@@ -2525,6 +3615,31 @@ body {
    RESPONSIVE
 ========================================================= */
 
+
+@media (max-width: 1024px) {
+  .menu-button {
+    min-width: 190px;
+
+    padding: 14px 16px;
+  }
+
+  .game-menu {
+    gap: 10px;
+  }
+
+  .quest-panel {
+    padding: 16px;
+  }
+
+  .journey-map {
+    gap: 18px;
+  }
+
+  .world-content {
+    padding-bottom: 70px;
+  }
+}
+
 @media (max-width: 700px) {
   .world-header {
     flex-direction: column;
@@ -2703,9 +3818,9 @@ body {
   }
 
   .hidden-star {
-    right: 15px;
+    right: 8px;
 
-    bottom: 25px;
+    bottom: 15px;
 
     font-size: 16px;
   }
@@ -2740,5 +3855,18 @@ body {
 
   .final-close {
     font-size: 7px;
+  }
+}
+
+
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
